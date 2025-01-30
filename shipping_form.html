@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Envio</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("service_m9k11sg"); // Substitua pelo seu User ID do EmailJS
+        })();
+
+        function enviarFormulario(event) {
+            event.preventDefault(); // Evita o envio padrão do formulário
+            
+            // Obtém os dados do formulário
+            const params = {
+                to_name: "GreenVault Team", // Nome do destinatário
+                from_name: document.getElementById("full-name").value, // Nome do cliente
+                message: "Você recebeu um novo pedido de envio.",
+                full_name: document.getElementById("full-name").value,
+                email: document.getElementById("email").value,
+                address: document.getElementById("address").value,
+                parcel_locker: document.getElementById("parcel-locker").value || "Não informado",
+                phone: document.getElementById("phone").value || "Não informado",
+                comments: document.getElementById("comments").value || "Sem comentários adicionais",
+                shipping_option: document.querySelector('input[name="shipping-option"]:checked').value,
+                payment_currency: document.querySelector('input[name="payment-currency"]:checked').value
+            };
+
+            // Envia o e-mail usando EmailJS
+            emailjs.send("service_m9k11sg", "template_dayb3lm", params)
+                .then(function(response) {
+                    alert("Formulário enviado com sucesso! Obrigado.");
+                }, function(error) {
+                    alert("Houve um erro ao enviar o formulário. Tente novamente.");
+                });
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="enviarFormulario(event)">
+        <h2>Formulário de Envio</h2>
+
+        <fieldset>
+            <legend>Endereço de Envio</legend>
+            <label for="full-name">Nome Completo</label>
+            <input type="text" id="full-name" name="full-name" required>
+
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="address">Endereço</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="parcel-locker">Locker de Pacotes (opcional)</label>
+            <input type="text" id="parcel-locker" name="parcel-locker">
+
+            <label for="phone">Telefone (opcional)</label>
+            <input type="tel" id="phone" name="phone">
+
+            <label for="comments">Comentários (opcional)</label>
+            <textarea id="comments" name="comments" rows="4"></textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>Opção de Envio</legend>
+            <label>
+                <input type="radio" name="shipping-option" value="Regular (grátis, 3-5 dias)" checked>
+                Regular (grátis, 3-5 dias)
+            </label>
+            <label>
+                <input type="radio" name="shipping-option" value="Expresso (R$30, próximo dia)">
+                Expresso (R$30, próximo dia)
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Moeda de Pagamento</legend>
+            <label>
+                <input type="radio" name="payment-currency" value="Bitcoin" checked>
+                Bitcoin
+            </label>
+            <label>
+                <input type="radio" name="payment-currency" value="Litecoin">
+                Litecoin
+            </label>
+            <label>
+                <input type="radio" name="payment-currency" value="Monero">
+                Monero
+            </label>
+        </fieldset>
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
